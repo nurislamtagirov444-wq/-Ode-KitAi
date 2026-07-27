@@ -1,17 +1,18 @@
 # Ode KitAi: Arena Agent Prompt + Local AI Kit
 
-Публичный репозиторий с готовым промптом для Arena AI Agent Mode и локальным AI-kit: запуск open-source моделей, подключение «модов»/плагинов из GitHub и работа без платных API-лимитов.
+Публичный репозиторий с готовым промптом для Arena AI Agent Mode и AI-сайтом: no-download режим через удалённые free-tier провайдеры, опциональный локальный Ollama, GitHub-моды и плагины.
 
-> Важно: полностью **бесплатной, облачной, безлимитной и быстрой** среды не бывает. Всегда есть лимит: железо, RAM/VRAM, электричество, правила сервиса или скорость. Самый близкий вариант к «безлимиту» — запускать модель локально на своём ПК/сервере и подключаться к ней с Android через браузер.
+> Важно: если не хочешь скачивать модель, используй no-download провайдеры в сайте: Pollinations, Puter.js, OpenRouter/Groq через свои ключи или свой OpenAI-compatible endpoint. Абсолютный безлимит не обещается: у удалённых AI обычно есть лимиты по запросам, токенам, скорости, аккаунту и правилам сервиса.
 
 ## Что уже есть в этом репозитории
 
-- `docker-compose.yml` — локальный запуск Ollama + Open WebUI.
-- `docker-compose.gpu.yml` — опциональный GPU-оверрайд для NVIDIA.
-- `web/` — готовый локальный AI-сайт с чатом, настройками и каталогом GitHub-модов.
+- `docker-compose.yml` — запуск AI-сайта, Ollama и Open WebUI.
+- `docker-compose.gpu.yml` — опциональный GPU-оверрайд для NVIDIA, если всё-таки нужен локальный Ollama.
+- `web/` — готовый AI-сайт с no-download провайдерами, чатом, настройками и каталогом GitHub-модов.
 - `local_agent.py` — простой локальный агент на Python с плагинами.
 - `plugins/` — примеры плагинов: калькулятор, клонирование репозиториев, чтение README.
 - `scripts/` — удобные скрипты для запуска сайта, загрузки модели и клонирования модификаций.
+- `docs/NO_DOWNLOAD_FREE_AI_RU.md` — как пользоваться AI без скачивания модели.
 - `docs/FREE_LIMITLESS_AI_RU.md` — подробная инструкция на русском.
 - `docs/ANDROID_RU.md` — как использовать это с Android без лагов.
 - `docs/GITHUB_ACCESS_RU.md` — как дать агенту доступ читать GitHub.
@@ -44,45 +45,59 @@ prompts/arena-agent-mode-strategist-ru.md
 
 Скопируй промпт в первый запрос Arena или в Custom Instructions, если они доступны. Просто положить промпт в репозиторий обычно недостаточно: агент может не читать его автоматически.
 
-## Быстрый старт: свой AI-сайт + Open WebUI + Ollama
+## Быстрый старт без скачивания модели
 
-### 1. Установи Docker
+### 1. Запусти сайт
 
-Нужен Docker Desktop / Docker Engine с Compose.
-
-### 2. Запусти окружение
+Если есть Python:
 
 ```bash
-docker compose up -d
+./scripts/start-ai-site.sh
 ```
 
-Открой свой AI-сайт:
+Или через Docker:
+
+```bash
+docker compose up -d ai-site
+```
+
+### 2. Открой сайт
 
 ```text
 http://localhost:7860
 ```
 
-Open WebUI тоже будет доступен:
+### 3. Выбери no-download провайдера
+
+В правой панели сайта по умолчанию выбран:
 
 ```text
-http://localhost:3000
+No-download: Puter.js в браузере
 ```
 
-### 3. Скачай модель
+Модель скачивать не нужно. Нужен только интернет. Puter.js может попросить вход в Puter.
 
-Для слабого железа начни с маленькой модели:
+Если Puter.js не подходит, попробуй:
+
+```text
+No-download: Pollinations
+```
+
+### 4. Опционально: OpenRouter/Groq
+
+Если у тебя есть API key, не отправляй его в чат. Задай его локально в терминале перед запуском сайта:
 
 ```bash
-./scripts/pull-model.sh llama3.2:1b
+OPENROUTER_API_KEY="твой_ключ" ./scripts/start-ai-site.sh
 ```
 
-Для ПК получше можно попробовать:
+Или:
 
 ```bash
-./scripts/pull-model.sh llama3.2:3b
+GROQ_API_KEY="твой_ключ" ./scripts/start-ai-site.sh
 ```
 
-### 4. Подключайся с Android
+### 5. Подключайся с Android
 
 Если ПК и телефон в одной Wi‑Fi сети:
 
@@ -102,7 +117,22 @@ http://IP_ТВОЕГО_ПК:7860
 http://IP_ТВОЕГО_ПК:3000
 ```
 
-Так телефон не тянет модель сам — он только показывает интерфейс, поэтому Android не должен лагать из-за инференса.
+Так телефон не тянет модель сам — он только показывает интерфейс. В no-download режиме модель вообще не скачивается на твой ПК: запрос уходит к выбранному удалённому провайдеру.
+
+## Опционально: локальный Ollama
+
+Если когда-нибудь захочешь локальный режим без удалённых провайдеров:
+
+```bash
+docker compose --profile local up -d ollama open-webui
+./scripts/pull-model.sh llama3.2:1b
+```
+
+Open WebUI будет доступен:
+
+```text
+http://localhost:3000
+```
 
 ## GPU-вариант
 
@@ -120,7 +150,7 @@ docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d
 web/
 ```
 
-Запуск без Docker, если Ollama уже работает на ПК:
+Запуск без Docker. Ollama не обязателен, если выбран Pollinations или Puter.js:
 
 ```bash
 ./scripts/start-ai-site.sh
@@ -134,10 +164,11 @@ http://localhost:7860
 
 Внутри сайта есть:
 
-- чат с локальной моделью Ollama;
+- чат через no-download провайдеры или локальный Ollama;
+- выбор провайдера: Pollinations, Puter.js, OpenRouter, Groq, свой OpenAI-compatible API, Ollama;
 - настройки модели, temperature, context, длины ответа;
 - системный промпт;
-- готовые режимы: стратег, GitHub-аудитор, Android без лагов, локальный AI;
+- готовые режимы: стратег, GitHub-аудитор, Android без лагов, AI без скачивания модели;
 - каталог GitHub-модов с командами клонирования.
 
 Подробно: [`web/README_RU.md`](web/README_RU.md).

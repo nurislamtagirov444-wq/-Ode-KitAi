@@ -24,7 +24,7 @@ body {
   color: var(--text);
 }
 
-button, input, textarea {
+button, input, textarea, select {
   font: inherit;
 }
 
@@ -191,7 +191,7 @@ h2 { font-size: 1.35rem; margin-bottom: 1rem; }
   margin-top: 1rem;
 }
 
-textarea, input {
+textarea, input, select {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -201,8 +201,9 @@ textarea, input {
   padding: 0.85rem 0.9rem;
 }
 
-textarea:focus, input:focus { border-color: rgba(106, 169, 255, 0.85); }
+textarea:focus, input:focus, select:focus { border-color: rgba(106, 169, 255, 0.85); }
 textarea { resize: vertical; }
+.hint { color: var(--muted); line-height: 1.45; }
 
 .field {
   display: grid;

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ode KitAi — бесплатный локальный AI-сайт</title>
+  <title>Ode KitAi — AI-сайт без скачивания модели</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,16 +11,16 @@
     <header class="hero">
       <div>
         <p class="eyebrow">Ode KitAi</p>
-        <h1>Бесплатный локальный AI-сайт для Android, ПК и GitHub-модов</h1>
+        <h1>AI-сайт без скачивания модели для Android, ПК и GitHub-модов</h1>
         <p class="hero-text">
-          Сайт работает через локальный Ollama. Android используется как экран, а модель считает на ПК или облачном ПК.
-          Нет оплаты за каждый запрос, но остаются лимиты железа, скорости и памяти.
+          По умолчанию сайт работает через no-download провайдеры: Pollinations или Puter.js. Android используется как экран.
+          Локальный Ollama оставлен только как опция, если когда-нибудь сам захочешь локальную модель.
         </p>
       </div>
       <div class="hero-card">
         <div class="status-row">
           <span class="dot" id="statusDot"></span>
-          <span id="statusText">Проверяю Ollama...</span>
+          <span id="statusText">Проверяю no-download режим...</span>
         </div>
         <button id="checkStatusBtn" class="secondary">Проверить снова</button>
       </div>
@@ -49,8 +49,21 @@
         <h2>Модель и поведение</h2>
 
         <label class="field">
-          <span>Модель Ollama</span>
-          <input id="modelInput" value="llama3.2:1b" autocomplete="off">
+          <span>Провайдер AI</span>
+          <select id="providerInput">
+            <option value="puter" selected>No-download: Puter.js в браузере</option>
+            <option value="pollinations">No-download: Pollinations</option>
+            <option value="openrouter">No-download: OpenRouter через env key</option>
+            <option value="groq">No-download: Groq через env key</option>
+            <option value="custom-openai">No-download: свой OpenAI-compatible API</option>
+            <option value="ollama">Local: Ollama</option>
+          </select>
+          <small id="providerHint" class="hint"></small>
+        </label>
+
+        <label class="field">
+          <span>Модель</span>
+          <input id="modelInput" value="anthropic/claude-sonnet-4-5" autocomplete="off">
         </label>
 
         <div class="two-cols">
@@ -107,10 +120,10 @@
       <p class="eyebrow">Нулевая настройка</p>
       <h2>Минимальный путь</h2>
       <ol class="steps">
-        <li><strong>Запусти Ollama + Open WebUI:</strong> <code>docker compose up -d</code></li>
-        <li><strong>Скачай модель без платного API:</strong> <code>./scripts/pull-model.sh llama3.2:1b</code></li>
-        <li><strong>Запусти этот сайт:</strong> <code>python3 web/server.py --host 0.0.0.0 --port 7860</code></li>
+        <li><strong>Запусти этот сайт:</strong> <code>./scripts/start-ai-site.sh</code></li>
         <li><strong>Открой на ПК:</strong> <code>http://localhost:7860</code></li>
+        <li><strong>Провайдер по умолчанию:</strong> <code>No-download: Puter.js</code></li>
+        <li><strong>Если не подходит:</strong> переключись на <code>No-download: Pollinations</code></li>
         <li><strong>Открой на Android:</strong> <code>http://IP_ПК:7860</code></li>
       </ol>
       <p class="warning">
