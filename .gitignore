@@ -7,7 +7,7 @@ out/
 captures/
 .externalNativeBuild/
 .cxx/
-*.apk
+# *.apk (APK релиза хранится в release/)
 *.aab
 *.keystore
 !debug.keystore

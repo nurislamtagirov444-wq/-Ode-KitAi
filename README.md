@@ -7,7 +7,9 @@
 
 ## 📥 Скачать APK
 
-**→ [Последний релиз (OdaKitAi-v1.0.apk)](https://github.com/nurislamtagirov444-wq/-Ode-KitAi/releases/latest)**
+**→ [Скачать OdaKitAi-v1.0.apk (2.6 МБ)](https://github.com/nurislamtagirov444-wq/-Ode-KitAi/raw/arena/019fa405-ode-kitai/release/OdaKitAi-v1.0.apk)**
+
+Готовый подписанный APK лежит в папке [`release/`](release/).
 
 Установка: скачай `.apk` на телефон → разреши «Установка из неизвестных источников» → открой файл.
 
@@ -33,14 +35,19 @@ Android 5.0+ (minSdk 21), ~4 МБ.
 | Сценарий | [`app/src/main/assets/www/js/story.js`](app/src/main/assets/www/js/story.js) — граф узлов |
 | Движок | [`app/src/main/assets/www/js/engine.js`](app/src/main/assets/www/js/engine.js) |
 | Арт | сгенерирован ИИ, фоны JPEG + спрайты PNG с альфой |
-| Сборка | GitHub Actions → APK в Releases |
+| Сборка | подписанный APK в [`release/`](release/) (v1 + v2 + v3 signature, zipalign) |
 
 ### Собрать локально
+
+Вариант с Android Studio / Gradle:
 
 ```bash
 ./gradlew :app:assembleRelease
 # app/build/outputs/apk/release/app-release.apk
 ```
+
+Опубликованный APK собран без Android Studio — из папки `app/src/main/assets/www`
+упаковкой веб-ассетов в WebView-контейнер (нужен только Java-рантайм).
 
 ### Добавить свою сцену
 
@@ -58,4 +65,4 @@ my_node: {
 }
 ```
 
-APK пересоберётся автоматически при пуше.
+После правки сценария достаточно пересобрать APK — нативный код менять не нужно.
