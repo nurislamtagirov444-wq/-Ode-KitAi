@@ -1,0 +1,28 @@
+# Секреты. Никогда не коммить.
+.env
+.env.*
+!.env.example
+
+# Локальные данные запуска
+mods/
+.kitai_state/
+*.log
+
+# Установленные копии встроенных модов.
+# Источник правды — kitai/builtin_mods/. В plugins/ попадают копии после
+# 'kitai_cli.py mods install', их не нужно хранить в git.
+plugins/web_fetch.py
+plugins/notes.py
+plugins/strategy_tools.py
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/

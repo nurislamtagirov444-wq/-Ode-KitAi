@@ -1,0 +1,166 @@
+{
+  "_comment": [
+    "Стратегия = какой провайдер пробовать первым и что делать, когда он упал или кончился лимит.",
+    "profiles: готовые режимы. active_profile: какой режим используется сейчас.",
+    "Меняй через 'python3 kitai_cli.py strategy use <профиль>' или руками."
+  ],
+  "active_profile": "balanced",
+  "answer_format": {
+    "language": "ru",
+    "no_emoji": true,
+    "beginner_mode": true,
+    "sections": [
+      "ЦЕЛЬ",
+      "ИСХОДНЫЕ ДАННЫЕ",
+      "ДОПУЩЕНИЯ",
+      "ОТКРЫТЫЙ РАЗБОР",
+      "3-5 СТРАТЕГИЙ",
+      "СРАВНЕНИЕ",
+      "ПРОВЕРКА ДЫР",
+      "ВЫБОР",
+      "РЕШЕНИЕ С НУЛЯ",
+      "ПРОВЕРКА РЕЗУЛЬТАТА",
+      "ЕСЛИ НЕ РАБОТАЕТ",
+      "СЛЕДУЮЩИЙ ЗАПРОС"
+    ],
+    "final_block": "ВНИМАНИЕ!!! БЕРИ МОЮ ПОЛНУЮ НУЛЕВУЮ НАСТРОЙКУ!!!"
+  },
+  "model_preferences": {
+    "avoid_families": [
+      "qwen",
+      "deepseek"
+    ],
+    "avoid_reason": "Прямое пожелание пользователя. Модели этих семейств не подставляются автоматически.",
+    "prefer_families": [
+      "llama",
+      "mistral",
+      "gemma",
+      "phi",
+      "gpt-oss"
+    ]
+  },
+  "profiles": {
+    "private_local": {
+      "title": "Только локально, ничего не уходит наружу",
+      "description": "Все запросы идут в Ollama на твоём компьютере. Медленнее, но приватно и без лимитов на количество.",
+      "chain": [
+        {
+          "provider": "ollama",
+          "model": "llama3.2:3b"
+        },
+        {
+          "provider": "ollama",
+          "model": "llama3.2:1b"
+        }
+      ],
+      "allow_cloud": false
+    },
+    "fast_free": {
+      "title": "Максимальная скорость на бесплатном",
+      "description": "Сначала Groq (самый быстрый бесплатный), потом Gemini, потом локальная модель как страховка.",
+      "chain": [
+        {
+          "provider": "groq",
+          "model": "llama-3.1-8b-instant"
+        },
+        {
+          "provider": "groq",
+          "model": "llama-3.3-70b-versatile"
+        },
+        {
+          "provider": "gemini",
+          "model": "gemini-2.5-flash"
+        },
+        {
+          "provider": "ollama",
+          "model": "llama3.2:3b"
+        }
+      ],
+      "allow_cloud": true
+    },
+    "balanced": {
+      "title": "Баланс: бесплатное облако с локальным запасом",
+      "description": "Рабочий режим по умолчанию. Сначала быстрое бесплатное облако, при исчерпании лимита — следующий провайдер, в конце локальная модель, которая не кончается.",
+      "chain": [
+        {
+          "provider": "groq",
+          "model": "llama-3.1-8b-instant"
+        },
+        {
+          "provider": "gemini",
+          "model": "gemini-2.5-flash"
+        },
+        {
+          "provider": "github_models",
+          "model": "openai/gpt-4o-mini"
+        },
+        {
+          "provider": "openrouter",
+          "model": "meta-llama/llama-3.3-70b-instruct:free"
+        },
+        {
+          "provider": "ollama",
+          "model": "llama3.2:3b"
+        }
+      ],
+      "allow_cloud": true
+    },
+    "deep_research": {
+      "title": "Долгий разбор и длинный контекст",
+      "description": "Сначала модели с большим контекстом, потом сильные модели, локальная в конце.",
+      "chain": [
+        {
+          "provider": "gemini",
+          "model": "gemini-2.5-flash"
+        },
+        {
+          "provider": "groq",
+          "model": "llama-3.3-70b-versatile"
+        },
+        {
+          "provider": "github_models",
+          "model": "openai/gpt-4.1-mini"
+        },
+        {
+          "provider": "ollama",
+          "model": "mistral:7b"
+        }
+      ],
+      "allow_cloud": true
+    },
+    "android": {
+      "title": "С телефона Tecno Camon 19 Pro",
+      "description": "Телефон не тянет большую модель локально. Считает облако, телефон только показывает ответ.",
+      "chain": [
+        {
+          "provider": "groq",
+          "model": "llama-3.1-8b-instant"
+        },
+        {
+          "provider": "gemini",
+          "model": "gemini-2.5-flash-lite"
+        },
+        {
+          "provider": "openrouter",
+          "model": "meta-llama/llama-3.3-70b-instruct:free"
+        }
+      ],
+      "allow_cloud": true
+    }
+  },
+  "runtime": {
+    "timeout_seconds": 120,
+    "max_retries_per_step": 1,
+    "retry_on_status": [
+      408,
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "backoff_seconds": 2,
+    "temperature": 0.3,
+    "max_tokens": 1200
+  }
+}

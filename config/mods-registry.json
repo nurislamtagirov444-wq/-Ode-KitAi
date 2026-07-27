@@ -1,0 +1,60 @@
+{
+  "_comment": [
+    "Реестр модификаций (модов) для агента.",
+    "Мод типа 'plugin' — файл .py, который добавляет команду в local_agent.py.",
+    "Мод типа 'repo' — сторонний репозиторий, который просто скачивается в ./mods и НЕ запускается автоматически.",
+    "Правило безопасности: скачивание не равно запуску. Перед запуском чужого кода читай README и код."
+  ],
+  "mods": [
+    {
+      "id": "web-fetch",
+      "type": "plugin",
+      "title": "Чтение веб-страницы в текст",
+      "description": "Команда /web URL — скачать страницу и показать текст без HTML-тегов. Только http/https, без локальной сети.",
+      "source": "builtin",
+      "file": "web_fetch.py",
+      "risk": "low",
+      "needs_network": true
+    },
+    {
+      "id": "notes",
+      "type": "plugin",
+      "title": "Заметки агента",
+      "description": "Команды /note добавить и /notes показать. Хранит заметки в .kitai_state/notes.md.",
+      "source": "builtin",
+      "file": "notes.py",
+      "risk": "low",
+      "needs_network": false
+    },
+    {
+      "id": "strategy-tools",
+      "type": "plugin",
+      "title": "Управление стратегией из чата",
+      "description": "Команды /strategy, /providers, /use — смотреть и переключать профиль прямо в диалоге.",
+      "source": "builtin",
+      "file": "strategy_tools.py",
+      "risk": "low",
+      "needs_network": false
+    },
+    {
+      "id": "open-webui",
+      "type": "repo",
+      "title": "Open WebUI — веб-интерфейс как у ChatGPT",
+      "description": "Локальный веб-интерфейс для Ollama. Открывается в браузере телефона. В этом репозитории уже поднимается через docker-compose.yml.",
+      "url": "https://github.com/open-webui/open-webui.git",
+      "license": "BSD-3-Clause (проверь актуальную в репозитории)",
+      "risk": "medium",
+      "note": "Большой репозиторий. Для обычной работы клонировать не нужно — достаточно docker compose up -d."
+    },
+    {
+      "id": "llama-cpp",
+      "type": "repo",
+      "title": "llama.cpp — запуск GGUF-моделей без Docker",
+      "description": "Альтернатива Ollama. Работает на слабом железе и в Termux на Android.",
+      "url": "https://github.com/ggml-org/llama.cpp.git",
+      "license": "MIT (проверь актуальную в репозитории)",
+      "risk": "medium",
+      "note": "Требует компиляции. На телефоне сборка долгая и греет устройство."
+    }
+  ]
+}

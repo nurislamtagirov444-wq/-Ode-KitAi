@@ -1,0 +1,132 @@
+{
+  "_comment": [
+    "Каталог бесплатных способов доступа к моделям.",
+    "Все лимиты взяты из официальной документации (см. поле docs) и проверены 2026-07-27.",
+    "Провайдеры могут менять лимиты без предупреждения — команда 'kitai doctor' покажет реальное состояние.",
+    "Ключи здесь НЕ хранятся. Только имя переменной окружения в поле api_key_env."
+  ],
+  "checked_at": "2026-07-27",
+  "providers": [
+    {
+      "id": "ollama",
+      "title": "Ollama (локально, свой компьютер)",
+      "kind": "local",
+      "base_url_env": "OLLAMA_URL",
+      "base_url": "http://localhost:11434/v1",
+      "api_key_env": null,
+      "api_key_required": false,
+      "default_model": "llama3.2:3b",
+      "models": ["llama3.2:1b", "llama3.2:3b", "gemma3:4b", "mistral:7b", "phi4-mini"],
+      "limits": {
+        "rpm": null,
+        "rpd": null,
+        "note": "Нет лимита запросов. Ограничение только железо: RAM/VRAM, скорость, электричество."
+      },
+      "privacy": "Данные не покидают твой компьютер.",
+      "cost": "0 рублей за запросы, платишь электричеством и временем.",
+      "signup": "Установить Ollama: https://ollama.com/download",
+      "docs": "https://github.com/ollama/ollama/blob/main/docs/openai.md",
+      "good_for": ["приватность", "безлимит по количеству запросов", "работа без интернета"],
+      "weak_for": ["большие модели на слабом железе", "скорость на CPU"]
+    },
+    {
+      "id": "groq",
+      "title": "Groq (облако, самый быстрый бесплатный)",
+      "kind": "cloud_free",
+      "base_url_env": "GROQ_BASE_URL",
+      "base_url": "https://api.groq.com/openai/v1",
+      "api_key_env": "GROQ_API_KEY",
+      "api_key_required": true,
+      "default_model": "llama-3.1-8b-instant",
+      "models": [
+        "llama-3.1-8b-instant",
+        "llama-3.3-70b-versatile",
+        "openai/gpt-oss-20b",
+        "openai/gpt-oss-120b"
+      ],
+      "limits": {
+        "rpm": 30,
+        "rpd": 14400,
+        "note": "Официальная таблица: llama-3.1-8b-instant 30 RPM / 14.4K RPD / 6K TPM / 500K TPD; llama-3.3-70b-versatile 30 RPM / 1K RPD / 12K TPM / 100K TPD; gpt-oss-20b и gpt-oss-120b 30 RPM / 1K RPD / 8K TPM / 200K TPD."
+      },
+      "per_model_limits": {
+        "llama-3.1-8b-instant": {"rpm": 30, "rpd": 14400, "tpm": 6000, "tpd": 500000},
+        "llama-3.3-70b-versatile": {"rpm": 30, "rpd": 1000, "tpm": 12000, "tpd": 100000},
+        "openai/gpt-oss-20b": {"rpm": 30, "rpd": 1000, "tpm": 8000, "tpd": 200000},
+        "openai/gpt-oss-120b": {"rpm": 30, "rpd": 1000, "tpm": 8000, "tpd": 200000}
+      },
+      "privacy": "Запросы уходят на серверы Groq. Не отправляй личные документы.",
+      "cost": "0 рублей, карта не нужна.",
+      "signup": "https://console.groq.com — вход через Google/GitHub, затем API Keys.",
+      "docs": "https://console.groq.com/docs/rate-limits",
+      "good_for": ["скорость", "агенты с tool-calling", "быстрые ответы на слабом телефоне"],
+      "weak_for": ["длинный контекст на free", "суточный лимит токенов у больших моделей"]
+    },
+    {
+      "id": "gemini",
+      "title": "Google AI Studio / Gemini API",
+      "kind": "cloud_free",
+      "base_url_env": "GEMINI_BASE_URL",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+      "api_key_env": "GEMINI_API_KEY",
+      "api_key_required": true,
+      "default_model": "gemini-2.5-flash",
+      "models": ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash"],
+      "limits": {
+        "rpm": null,
+        "rpd": null,
+        "note": "Лимиты free-уровня Google меняет часто и они зависят от модели и проекта. Актуальные цифры смотри на https://aistudio.google.com/rate-limit — не полагайся на цифры из блогов."
+      },
+      "privacy": "Free-уровень Google может использовать данные для улучшения моделей (правила отличаются по регионам). Не отправляй личное.",
+      "cost": "0 рублей, карта не нужна.",
+      "signup": "https://aistudio.google.com/apikey",
+      "docs": "https://ai.google.dev/gemini-api/docs/rate-limits",
+      "good_for": ["длинный контекст", "разбор больших текстов", "мультимодальность"],
+      "weak_for": ["приватность на free-уровне", "нестабильные лимиты preview-моделей"]
+    },
+    {
+      "id": "github_models",
+      "title": "GitHub Models (у тебя уже есть аккаунт GitHub)",
+      "kind": "cloud_free",
+      "base_url_env": "GITHUB_MODELS_BASE_URL",
+      "base_url": "https://models.github.ai/inference",
+      "api_key_env": "GITHUB_MODELS_TOKEN",
+      "api_key_required": true,
+      "default_model": "openai/gpt-4o-mini",
+      "models": ["openai/gpt-4o-mini", "openai/gpt-4.1-mini", "meta/llama-3.3-70b-instruct"],
+      "limits": {
+        "rpm": 10,
+        "rpd": 50,
+        "note": "Бесплатное API в public preview. Ориентир: 10-15 RPM и 50-150 RPD в зависимости от класса модели. Точные цифры в докcах GitHub, они меняются."
+      },
+      "privacy": "Запросы уходят в GitHub/Azure.",
+      "cost": "0 рублей. Нужен personal access token с правом models:read.",
+      "signup": "https://github.com/marketplace/models — затем создать токен с правом models:read",
+      "docs": "https://docs.github.com/en/github-models/use-github-models/prototyping-with-ai-models",
+      "good_for": ["доступ к сильным моделям без карты", "прототипы"],
+      "weak_for": ["маленький суточный лимит", "preview-статус, может измениться"]
+    },
+    {
+      "id": "openrouter",
+      "title": "OpenRouter (много моделей одним ключом)",
+      "kind": "cloud_free",
+      "base_url_env": "OPENROUTER_BASE_URL",
+      "base_url": "https://openrouter.ai/api/v1",
+      "api_key_env": "OPENROUTER_API_KEY",
+      "api_key_required": true,
+      "default_model": "meta-llama/llama-3.3-70b-instruct:free",
+      "models": ["meta-llama/llama-3.3-70b-instruct:free", "google/gemma-3-27b-it:free"],
+      "limits": {
+        "rpm": 20,
+        "rpd": 50,
+        "note": "Официально: модели с :free дают 20 RPM и 50 запросов в сутки, если куплено меньше $10 кредитов за всё время. После разовой покупки $10 — 1000 запросов в сутки. Список бесплатных моделей меняется."
+      },
+      "privacy": "Запросы идут через OpenRouter к разным провайдерам.",
+      "cost": "0 рублей на free-моделях. Карта не нужна для старта.",
+      "signup": "https://openrouter.ai/keys",
+      "docs": "https://openrouter.ai/docs/api-reference/limits",
+      "good_for": ["сравнение моделей", "резервный вариант", "один ключ на много моделей"],
+      "weak_for": ["50 запросов в сутки без пополнения", "модели пропадают из free-списка"]
+    }
+  ]
+}
