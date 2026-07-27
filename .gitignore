@@ -11,3 +11,7 @@ captures/
 *.aab
 *.keystore
 !debug.keystore
+
+# Исходники арта (крупные PNG до сжатия) — в репозиторий не кладём
+art/*.png
+!art/icon_source.png

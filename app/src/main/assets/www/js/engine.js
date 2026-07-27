@@ -41,14 +41,18 @@
     }, 180);
   }
 
-  function setSprites(sprites, active) {
+  function setSprites(sprites, active, faces) {
     sprites = sprites || {};
+    faces = faces || {};
     [['left', el.sl], ['right', el.sr]].forEach(function (p) {
       var side = p[0], img = p[1], who = sprites[side];
       if (who && CHARS[who] && CHARS[who].img) {
-        if (img.getAttribute('data-who') !== who) {
-          img.src = CHARS[who].img;
-          img.setAttribute('data-who', who);
+        var face = faces[side];
+        var src = (face && CHARS[who].faces && CHARS[who].faces[face]) || CHARS[who].img;
+        var key = who + ':' + (face || '');
+        if (img.getAttribute('data-who') !== key) {
+          img.src = src;
+          img.setAttribute('data-who', key);
         }
         img.classList.add('show');
         img.classList.toggle('dim', !!active && active !== side);
@@ -58,6 +62,32 @@
       }
     });
   }
+
+  var cgEl = null;
+  function showCg(name) {
+    if (!cgEl) {
+      cgEl = document.createElement('div');
+      cgEl.id = 'cg';
+      el.game.insertBefore(cgEl, document.getElementById('stage'));
+    }
+    cgEl.style.backgroundImage = 'url(img/' + name + '.jpg)';
+    cgEl.classList.add('show');
+    curBg = '';
+  }
+  function hideCg() { if (cgEl) cgEl.classList.remove('show'); }
+
+  var audio = null, voiceOn = true;
+  function playVoice(name) {
+    if (audio) { audio.pause(); audio = null; }
+    if (!name || !voiceOn) return;
+    try {
+      audio = new Audio('audio/' + name + '.mp3');
+      audio.volume = 0.9;
+      var pr = audio.play();
+      if (pr && pr.catch) pr.catch(function () {});
+    } catch (e) {}
+  }
+  function stopVoice() { if (audio) { audio.pause(); audio = null; } }
 
   function typewrite(txt) {
     clearInterval(typing);
@@ -93,8 +123,14 @@
 
     if (n.ending) { return showEnding(n.ending); }
 
-    setBg(n.bg);
-    setSprites(n.sprites, n.active);
+    if (n.cg) {
+      showCg(n.cg);
+    } else {
+      hideCg();
+      setBg(n.bg);
+    }
+    setSprites(n.cg ? null : n.sprites, n.active, n.faces);
+    playVoice(n.voice);
 
     if (n.flash) {
       el.flash.classList.add('on');
@@ -152,6 +188,7 @@
     var e = ENDINGS[key];
     var aff = 'Кит: ' + state.aff.kit + ' · Юки: ' + state.aff.yuki;
     openOverlay(e.title,
+      (e.cg ? '<img class="ending-cg" src="img/' + e.cg + '.jpg" alt="">' : '') +
       '<p class="about">' + e.desc + '</p>' +
       '<p class="about" style="opacity:.6">Связь — ' + aff + '</p>' +
       '<p class="about" style="opacity:.6">Всего концовок: 4. Открой все, чтобы собрать полную «Оду».</p>',
@@ -186,6 +223,7 @@
   }
 
   function newGame() {
+    stopVoice();
     state = { node: 'start', aff: { kit: 0, yuki: 0 }, log: [] };
     auto = false; skip = false; syncHud();
     curBg = '';
@@ -194,6 +232,7 @@
   }
 
   function toTitle() {
+    stopVoice(); hideCg();
     auto = false; skip = false; clearTimeout(autoTimer); syncHud();
     show('title');
     $('#btn-continue').disabled = !load();
@@ -214,8 +253,9 @@
     var g = getEndings(), html = '';
     for (var k in ENDINGS) {
       var open = !!g[k];
-      html += '<div class="ending-card' + (open ? '' : ' locked') + '"><b>' +
-        (open ? ENDINGS[k].title : '??? — не открыта') + '</b>' +
+      html += '<div class="ending-card' + (open ? '' : ' locked') + '">' +
+        (open && ENDINGS[k].cg ? '<img class="ending-cg" src="img/' + ENDINGS[k].cg + '.jpg" alt="">' : '') +
+        '<b>' + (open ? ENDINGS[k].title : '??? — не открыта') + '</b>' +
         (open ? ENDINGS[k].desc : 'Пройди историю иначе, чтобы открыть.') + '</div>';
     }
     openOverlay('Галерея концовок', html);
@@ -237,6 +277,18 @@
   };
   $('#btn-auto').onclick = function (e) { e.stopPropagation(); auto = !auto; skip = false; syncHud(); scheduleAuto(); };
   $('#btn-skip').onclick = function (e) { e.stopPropagation(); skip = !skip; auto = false; syncHud(); scheduleAuto(); };
+  var btnVoice = document.getElementById('btn-voice');
+  if (btnVoice) {
+    btnVoice.classList.add('on');
+    btnVoice.onclick = function (e) {
+      e.stopPropagation();
+      voiceOn = !voiceOn;
+      btnVoice.classList.toggle('on', voiceOn);
+      btnVoice.textContent = voiceOn ? '🔊' : '🔇';
+      if (!voiceOn) stopVoice();
+    };
+  }
+
   $('#btn-log').onclick = function (e) {
     e.stopPropagation();
     var html = state.log.slice(-40).map(function (l) {
@@ -260,5 +312,6 @@
   // Стартовое состояние
   toTitle();
   // Прелоад фонов
-  ['bg_classroom', 'bg_rooftop', 'bg_server'].forEach(function (b) { var i = new Image(); i.src = 'img/' + b + '.jpg'; });
+  ['bg_classroom', 'bg_rooftop', 'bg_server', 'bg_clubroom', 'bg_corridor', 'bg_street', 'bg_rain', 'cg_meeting']
+    .forEach(function (b) { var i = new Image(); i.src = 'img/' + b + '.jpg'; });
 })();

@@ -36,7 +36,12 @@ html,body{margin:0;padding:0;height:100%;background:#05070d;color:#eaf6ff;
 .bg{position:absolute;inset:0;background-position:center;background-size:cover;
   transition:opacity .45s ease;opacity:1}
 .bg.fading{opacity:0}
-#stage{position:absolute;inset:0;pointer-events:none}
+#cg{position:absolute;inset:0;background-position:center;background-size:cover;
+  background-repeat:no-repeat;opacity:0;transition:opacity .5s ease;z-index:2;pointer-events:none;
+  animation:cgzoom 14s ease-in-out infinite alternate}
+#cg.show{opacity:1}
+@keyframes cgzoom{from{transform:scale(1)}to{transform:scale(1.06)}}
+#stage{position:absolute;inset:0;pointer-events:none;z-index:3}
 .sprite{position:absolute;bottom:0;height:78%;max-width:60%;object-fit:contain;
   opacity:0;transition:opacity .35s ease,transform .35s ease;
   filter:drop-shadow(0 8px 26px rgba(0,0,0,.6))}
@@ -94,4 +99,5 @@ html,body{margin:0;padding:0;height:100%;background:#05070d;color:#eaf6ff;
   margin-bottom:8px;font-size:14px}
 .ending-card.locked{opacity:.4}
 .ending-card b{display:block;color:var(--accent2);margin-bottom:2px}
+.ending-cg{width:100%;border-radius:10px;margin-bottom:8px;display:block}
 .about{font-size:14px;line-height:1.6;opacity:.9}
