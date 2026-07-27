@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Ода KitAi</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- Заставка -->
+  <div id="title" class="screen active">
+    <div class="title-bg"></div>
+    <div class="title-inner">
+      <h1 class="game-title">Ода <span>KitAi</span></h1>
+      <p class="game-sub">Визуальная новелла · глава 1: «Голос в машине»</p>
+      <div class="menu">
+        <button class="btn primary" id="btn-new">Новая игра</button>
+        <button class="btn" id="btn-continue">Продолжить</button>
+        <button class="btn" id="btn-gallery">Галерея концовок</button>
+        <button class="btn" id="btn-about">Об игре</button>
+      </div>
+      <p class="hint">Тапни по экрану, чтобы листать текст</p>
+    </div>
+  </div>
+
+  <!-- Игра -->
+  <div id="game" class="screen">
+    <div id="bg" class="bg"></div>
+    <div id="stage">
+      <img id="sprite-left" class="sprite left" alt="">
+      <img id="sprite-right" class="sprite right" alt="">
+    </div>
+    <div id="flash"></div>
+
+    <div id="hud">
+      <button class="hud-btn" id="btn-menu">☰</button>
+      <button class="hud-btn" id="btn-auto">AUTO</button>
+      <button class="hud-btn" id="btn-skip">▶▶</button>
+      <button class="hud-btn" id="btn-log">LOG</button>
+    </div>
+
+    <div id="textbox">
+      <div id="speaker"></div>
+      <div id="text"></div>
+      <div id="next">▼</div>
+    </div>
+
+    <div id="choices"></div>
+  </div>
+
+  <!-- Оверлеи -->
+  <div id="overlay" class="overlay">
+    <div class="panel">
+      <h2 id="ov-title">Меню</h2>
+      <div id="ov-body"></div>
+      <button class="btn" id="ov-close">Закрыть</button>
+    </div>
+  </div>
+
+</div>
+<script src="js/story.js"></script>
+<script src="js/engine.js"></script>
+</body>
+</html>
