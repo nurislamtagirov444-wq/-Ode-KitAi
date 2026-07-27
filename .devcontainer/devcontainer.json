@@ -1,0 +1,21 @@
+{
+    "name": "Ode KitAi",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "17",
+            "jdkType": "msat",
+            "installGradle": true,
+            "installMaven": false
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "mathiasfrohlich.Kotlin"
+            ]
+        }
+    },
+    "postCreateCommand": "echo 'To build APKs, run: make build-apk'"
+}

@@ -13,3 +13,11 @@ venv/
 .DS_Store
 .idea/
 .vscode/
+
+# Build artifacts
+android-sdk/
+gradle-*
+*.apk
+test-apk/.gradle/
+test-apk/app/build/
+test-apk/build/
