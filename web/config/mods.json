@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Open WebUI",
+    "category": "webui",
+    "repo": "https://github.com/open-webui/open-webui",
+    "description": "Веб-интерфейс для локальных моделей и Ollama. Хорошая база для Android-доступа через браузер.",
+    "tags": ["webui", "ollama", "android", "self-hosted"],
+    "risk": "Нужен Docker/сервер. Не открывать в интернет без защиты. Перед обновлениями читать release notes."
+  },
+  {
+    "name": "Ollama",
+    "category": "runtime",
+    "repo": "https://github.com/ollama/ollama",
+    "description": "Простой локальный запуск моделей и API на ПК, ноутбуке или сервере.",
+    "tags": ["runtime", "models", "local", "api"],
+    "risk": "Скорость зависит от CPU/GPU/RAM. Большие модели могут лагать или не загрузиться."
+  },
+  {
+    "name": "llama.cpp",
+    "category": "runtime",
+    "repo": "https://github.com/ggml-org/llama.cpp",
+    "description": "Низкоуровневый запуск GGUF-моделей на разном железе, включая слабые устройства.",
+    "tags": ["gguf", "cpu", "android", "advanced"],
+    "risk": "Настройка сложнее, чем Ollama. Для новичка лучше начинать с готовых сборок или Docker."
+  },
+  {
+    "name": "Continue",
+    "category": "coding",
+    "repo": "https://github.com/continuedev/continue",
+    "description": "Open-source coding agent/assistant для IDE. Можно связать с локальными моделями.",
+    "tags": ["coding", "ide", "vscode", "jetbrains"],
+    "risk": "Качество сильно зависит от модели. Перед доступом к проектам проверь настройки приватности."
+  },
+  {
+    "name": "AnythingLLM",
+    "category": "rag",
+    "repo": "https://github.com/Mintplex-Labs/anything-llm",
+    "description": "Локальные рабочие пространства, документы, RAG и агенты поверх локальных или внешних моделей.",
+    "tags": ["rag", "documents", "workspace", "agent"],
+    "risk": "Может требовать больше RAM и диска. Документы с личными данными держать только в доверенной среде."
+  },
+  {
+    "name": "Flowise",
+    "category": "agent-builder",
+    "repo": "https://github.com/FlowiseAI/Flowise",
+    "description": "Визуальная сборка AI-агентов, цепочек и инструментов.",
+    "tags": ["agents", "visual", "low-code", "tools"],
+    "risk": "Не все шаблоны бесплатны в эксплуатации: некоторые узлы требуют внешние API-ключи."
+  },
+  {
+    "name": "Dify",
+    "category": "workflow",
+    "repo": "https://github.com/langgenius/dify",
+    "description": "Платформа для AI-приложений, workflow, RAG и инструментов с self-hosted вариантом.",
+    "tags": ["workflow", "rag", "self-hosted", "apps"],
+    "risk": "Тяжелее для 16 GB RAM, чем простой Ollama + WebUI. Нужна аккуратная Docker-настройка."
+  },
+  {
+    "name": "n8n",
+    "category": "automation",
+    "repo": "https://github.com/n8n-io/n8n",
+    "description": "Автоматизация задач и интеграций. Можно связывать с локальным AI через HTTP-запросы.",
+    "tags": ["automation", "telegram", "http", "workflow"],
+    "risk": "Автоматизации могут случайно отправлять данные наружу. Проверять каждую интеграцию и доступы."
+  },
+  {
+    "name": "LobeHub",
+    "category": "webui",
+    "repo": "https://github.com/lobehub/lobehub",
+    "description": "Веб-интерфейс и агентная оболочка. Полезно как альтернатива UI для экспериментов.",
+    "tags": ["webui", "agents", "ui", "self-hosted"],
+    "risk": "Проверить актуальную документацию и требования к API/моделям перед установкой."
+  },
+  {
+    "name": "OpenInterpreter",
+    "category": "agent",
+    "repo": "https://github.com/openinterpreter/openinterpreter",
+    "description": "Агент, который может выполнять действия на компьютере. Использовать только в песочнице.",
+    "tags": ["agent", "tools", "automation", "high-risk"],
+    "risk": "Высокий риск: агент может запускать команды. Не давать доступ к секретам и важным файлам без изоляции."
+  }
+]
