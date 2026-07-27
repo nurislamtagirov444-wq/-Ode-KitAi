@@ -12,6 +12,8 @@
 - `local_agent.py` — простой локальный агент на Python с плагинами.
 - `plugins/` — примеры плагинов: калькулятор, клонирование репозиториев, чтение README.
 - `scripts/` — удобные скрипты для запуска сайта, загрузки модели и клонирования модификаций.
+- `docs/index.html` — Android-only сайт для GitHub Pages без участия ПК.
+- `docs/ANDROID_ONLY_SITE_RU.md` — как включить GitHub Pages с телефона.
 - `docs/NO_DOWNLOAD_FREE_AI_RU.md` — как пользоваться AI без скачивания модели.
 - `docs/FREE_LIMITLESS_AI_RU.md` — подробная инструкция на русском.
 - `docs/ANDROID_RU.md` — как использовать это с Android без лагов.
@@ -45,11 +47,25 @@ prompts/arena-agent-mode-strategist-ru.md
 
 Скопируй промпт в первый запрос Arena или в Custom Instructions, если они доступны. Просто положить промпт в репозиторий обычно недостаточно: агент может не читать его автоматически.
 
-## Быстрый старт без скачивания модели
+## Android-only сайт без участия ПК
 
-### 1. Запусти сайт
+В папке `docs/` лежит полностью статический сайт для GitHub Pages:
 
-Если есть Python:
+```text
+docs/index.html
+```
+
+Он работает прямо в браузере Android через Puter.js или Pollinations. ПК, сервер, Docker, Ollama и скачивание модели не нужны.
+
+После включения GitHub Pages сайт будет открываться примерно так:
+
+```text
+https://nurislamtagirov444-wq.github.io/-Ode-KitAi/
+```
+
+## Быстрый старт без скачивания модели на ПК/сервере
+
+Если всё-таки хочешь запускать не через GitHub Pages, а локально или на облачном сервере:
 
 ```bash
 ./scripts/start-ai-site.sh
@@ -61,13 +77,13 @@ prompts/arena-agent-mode-strategist-ru.md
 docker compose up -d ai-site
 ```
 
-### 2. Открой сайт
+Открыть:
 
 ```text
 http://localhost:7860
 ```
 
-### 3. Выбери no-download провайдера
+### Выбери no-download провайдера
 
 В правой панели сайта по умолчанию выбран:
 
