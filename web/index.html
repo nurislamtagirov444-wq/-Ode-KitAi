@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ode KitAi — бесплатный локальный AI-сайт</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Ode KitAi</p>
+        <h1>Бесплатный локальный AI-сайт для Android, ПК и GitHub-модов</h1>
+        <p class="hero-text">
+          Сайт работает через локальный Ollama. Android используется как экран, а модель считает на ПК или облачном ПК.
+          Нет оплаты за каждый запрос, но остаются лимиты железа, скорости и памяти.
+        </p>
+      </div>
+      <div class="hero-card">
+        <div class="status-row">
+          <span class="dot" id="statusDot"></span>
+          <span id="statusText">Проверяю Ollama...</span>
+        </div>
+        <button id="checkStatusBtn" class="secondary">Проверить снова</button>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="panel chat-panel">
+        <div class="panel-title-row">
+          <div>
+            <p class="eyebrow">Чат</p>
+            <h2>Локальный AI</h2>
+          </div>
+          <button id="clearChatBtn" class="secondary">Очистить</button>
+        </div>
+
+        <div id="chatLog" class="chat-log" aria-live="polite"></div>
+
+        <form id="chatForm" class="chat-form">
+          <textarea id="userInput" rows="4" placeholder="Напиши задачу. Например: составь план установки Open WebUI на мой облачный ПК 16 GB RAM..."></textarea>
+          <button id="sendBtn" type="submit">Отправить</button>
+        </form>
+      </section>
+
+      <aside class="panel settings-panel">
+        <p class="eyebrow">Настройки</p>
+        <h2>Модель и поведение</h2>
+
+        <label class="field">
+          <span>Модель Ollama</span>
+          <input id="modelInput" value="llama3.2:1b" autocomplete="off">
+        </label>
+
+        <div class="two-cols">
+          <label class="field">
+            <span>Temperature</span>
+            <input id="temperatureInput" type="number" min="0" max="2" step="0.1" value="0.4">
+          </label>
+          <label class="field">
+            <span>Контекст</span>
+            <input id="contextInput" type="number" min="512" max="32768" step="512" value="4096">
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Максимум ответа</span>
+          <input id="predictInput" type="number" min="64" max="4096" step="64" value="512">
+        </label>
+
+        <label class="field">
+          <span>Системный промпт</span>
+          <textarea id="systemPromptInput" rows="12"></textarea>
+        </label>
+
+        <div class="button-row">
+          <button id="saveSettingsBtn" class="secondary" type="button">Сохранить</button>
+          <button id="resetSettingsBtn" class="secondary danger" type="button">Сброс</button>
+        </div>
+      </aside>
+    </main>
+
+    <section class="panel presets-panel">
+      <div class="panel-title-row">
+        <div>
+          <p class="eyebrow">Промпты</p>
+          <h2>Готовые режимы</h2>
+        </div>
+      </div>
+      <div class="preset-grid" id="presetGrid"></div>
+    </section>
+
+    <section class="panel mods-panel">
+      <div class="panel-title-row">
+        <div>
+          <p class="eyebrow">GitHub-моды</p>
+          <h2>Каталог безопасного старта</h2>
+          <p class="muted">Это не автозапуск чужого кода. Карточки дают ссылки, команды клонирования и предупреждения.</p>
+        </div>
+        <input id="modSearch" class="search" placeholder="Фильтр: webui, agent, android, coding...">
+      </div>
+      <div class="mods-grid" id="modsGrid"></div>
+    </section>
+
+    <section class="panel plan-panel">
+      <p class="eyebrow">Нулевая настройка</p>
+      <h2>Минимальный путь</h2>
+      <ol class="steps">
+        <li><strong>Запусти Ollama + Open WebUI:</strong> <code>docker compose up -d</code></li>
+        <li><strong>Скачай модель без платного API:</strong> <code>./scripts/pull-model.sh llama3.2:1b</code></li>
+        <li><strong>Запусти этот сайт:</strong> <code>python3 web/server.py --host 0.0.0.0 --port 7860</code></li>
+        <li><strong>Открой на ПК:</strong> <code>http://localhost:7860</code></li>
+        <li><strong>Открой на Android:</strong> <code>http://IP_ПК:7860</code></li>
+      </ol>
+      <p class="warning">
+        Не публикуй этот сайт в интернет без пароля, HTTPS и понимания безопасности. Для удалённого доступа лучше Tailscale или ZeroTier.
+      </p>
+    </section>
+  </div>
+
+  <template id="messageTemplate">
+    <article class="message">
+      <div class="message-role"></div>
+      <div class="message-content"></div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

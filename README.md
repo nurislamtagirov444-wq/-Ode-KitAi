@@ -8,9 +8,10 @@
 
 - `docker-compose.yml` — локальный запуск Ollama + Open WebUI.
 - `docker-compose.gpu.yml` — опциональный GPU-оверрайд для NVIDIA.
+- `web/` — готовый локальный AI-сайт с чатом, настройками и каталогом GitHub-модов.
 - `local_agent.py` — простой локальный агент на Python с плагинами.
 - `plugins/` — примеры плагинов: калькулятор, клонирование репозиториев, чтение README.
-- `scripts/` — удобные скрипты для загрузки модели и клонирования модификаций.
+- `scripts/` — удобные скрипты для запуска сайта, загрузки модели и клонирования модификаций.
 - `docs/FREE_LIMITLESS_AI_RU.md` — подробная инструкция на русском.
 - `docs/ANDROID_RU.md` — как использовать это с Android без лагов.
 - `docs/GITHUB_ACCESS_RU.md` — как дать агенту доступ читать GitHub.
@@ -43,7 +44,7 @@ prompts/arena-agent-mode-strategist-ru.md
 
 Скопируй промпт в первый запрос Arena или в Custom Instructions, если они доступны. Просто положить промпт в репозиторий обычно недостаточно: агент может не читать его автоматически.
 
-## Быстрый старт: Open WebUI + Ollama
+## Быстрый старт: свой AI-сайт + Open WebUI + Ollama
 
 ### 1. Установи Docker
 
@@ -55,7 +56,13 @@ prompts/arena-agent-mode-strategist-ru.md
 docker compose up -d
 ```
 
-Открой в браузере:
+Открой свой AI-сайт:
+
+```text
+http://localhost:7860
+```
+
+Open WebUI тоже будет доступен:
 
 ```text
 http://localhost:3000
@@ -83,7 +90,13 @@ http://localhost:3000
 hostname -I
 ```
 
-Открой на телефоне:
+Открой свой AI-сайт на телефоне:
+
+```text
+http://IP_ТВОЕГО_ПК:7860
+```
+
+Или Open WebUI:
 
 ```text
 http://IP_ТВОЕГО_ПК:3000
@@ -98,6 +111,36 @@ http://IP_ТВОЕГО_ПК:3000
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d
 ```
+
+## Свой AI-сайт
+
+Файлы сайта лежат в папке:
+
+```text
+web/
+```
+
+Запуск без Docker, если Ollama уже работает на ПК:
+
+```bash
+./scripts/start-ai-site.sh
+```
+
+Открыть:
+
+```text
+http://localhost:7860
+```
+
+Внутри сайта есть:
+
+- чат с локальной моделью Ollama;
+- настройки модели, temperature, context, длины ответа;
+- системный промпт;
+- готовые режимы: стратег, GitHub-аудитор, Android без лагов, локальный AI;
+- каталог GitHub-модов с командами клонирования.
+
+Подробно: [`web/README_RU.md`](web/README_RU.md).
 
 ## Локальный агент с плагинами
 
