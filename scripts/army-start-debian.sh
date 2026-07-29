@@ -66,17 +66,26 @@ PY
 start_session() {
   local name="$1"
   local command="$2"
+  local health_url="$3"
   local log="$LOG_DIR/${name}.log"
-  if tmux has-session -t "$name" 2>/dev/null; then
+
+  # Do not collide with an already running service that was started manually.
+  if [ -n "$health_url" ] && curl -fsS --max-time 3 "$health_url" >/dev/null 2>&1; then
     return 0
+  fi
+  if tmux has-session -t "$name" 2>/dev/null; then
+    if [ -z "$health_url" ]; then
+      return 0
+    fi
+    tmux kill-session -t "$name" 2>/dev/null || true
   fi
   tmux new-session -d -s "$name" "exec $command >> '$log' 2>&1"
 }
 
-start_session "army-g4f" "$G4F_BIN api"
-start_session "army-router" "$G4F_PYTHON $ROUTER_DIR/g4f_failover_router.py --config $ROUTER_DIR/routes.json"
-start_session "army-fcc" "$FCC_BIN"
-start_session "army-watchdog" "bash $ARMY_DIR/army-watchdog-debian.sh"
+start_session "army-g4f" "$G4F_BIN api" "http://127.0.0.1:1337/v1/models"
+start_session "army-router" "$G4F_PYTHON $ROUTER_DIR/g4f_failover_router.py --config $ROUTER_DIR/routes.json" "http://127.0.0.1:1340/health"
+start_session "army-fcc" "$FCC_BIN" "http://127.0.0.1:8082/health"
+start_session "army-watchdog" "bash $ARMY_DIR/army-watchdog-debian.sh" ""
 
 check_url() {
   local name="$1"
