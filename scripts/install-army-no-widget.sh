@@ -34,7 +34,7 @@ EOF
 chmod 700 "$PREFIX/bin/army-commander"
 
 echo "Installation complete. Starting the army now..."
-"$PREFIX/bin/army"
+"$PREFIX/bin/army-up"
 echo ""
 echo "Later use: army-up"
 echo "Commander use: army-commander"
