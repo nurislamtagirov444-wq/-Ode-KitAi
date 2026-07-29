@@ -19,13 +19,13 @@ chmod 700 "$ROUTER_DIR/g4f_failover_router.py" "$ARMY_DIR/army-start-debian.sh" 
 
 proot-distro login debian -- bash -lc 'apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y tmux curl'
 
-cat > "$PREFIX/bin/army" <<'EOF'
+cat > "$PREFIX/bin/army-up" <<'EOF'
 #!/data/data/com.termux/files/usr/bin/sh
 termux-wake-lock >/dev/null 2>&1 || true
 proot-distro login debian -- bash /sdcard/ARMY/army-start-debian.sh
 cat /sdcard/ARMY/logs/army-status.txt
 EOF
-chmod 700 "$PREFIX/bin/army"
+chmod 700 "$PREFIX/bin/army-up"
 
 cat > "$PREFIX/bin/army-commander" <<'EOF'
 #!/data/data/com.termux/files/usr/bin/sh
@@ -36,5 +36,5 @@ chmod 700 "$PREFIX/bin/army-commander"
 echo "Installation complete. Starting the army now..."
 "$PREFIX/bin/army"
 echo ""
-echo "Later use: army"
+echo "Later use: army-up"
 echo "Commander use: army-commander"
