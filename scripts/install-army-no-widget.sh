@@ -17,7 +17,7 @@ curl -fsSL "$RAW/scripts/army-start-debian.sh" -o "$ARMY_DIR/army-start-debian.s
 curl -fsSL "$RAW/scripts/army-watchdog-debian.sh" -o "$ARMY_DIR/army-watchdog-debian.sh"
 chmod 700 "$ROUTER_DIR/g4f_failover_router.py" "$ARMY_DIR/army-start-debian.sh" "$ARMY_DIR/army-watchdog-debian.sh"
 
-proot-distro login debian -- bash -lc 'apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y tmux curl'
+proot-distro login debian -- bash -lc 'apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y tmux curl && /root/g4f-venv/bin/python -m pip install -U httpx fastapi uvicorn'
 
 cat > "$PREFIX/bin/army-up" <<'EOF'
 #!/data/data/com.termux/files/usr/bin/sh
