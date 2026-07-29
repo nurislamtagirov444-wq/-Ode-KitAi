@@ -97,13 +97,27 @@ check_url() {
   fi
 }
 
+wait_for_url() {
+  local name="$1"
+  local url="$2"
+  local attempt=1
+  while [ "$attempt" -le 12 ]; do
+    if curl -fsS --max-time 3 "$url" >/dev/null 2>&1; then
+      printf '%s: OK\n' "$name"
+      return 0
+    fi
+    sleep 1
+    attempt=$((attempt + 1))
+  done
+  printf '%s: WAIT_OR_ERROR\n' "$name"
+}
+
 {
   date '+%Y-%m-%d %H:%M:%S'
   echo "Army launcher ran. Existing services were kept; missing ones were started."
-  sleep 3
-  check_url "g4f" "http://127.0.0.1:1337/v1/models"
-  check_url "router" "http://127.0.0.1:1340/health"
-  check_url "fcc" "http://127.0.0.1:8082/health"
+  wait_for_url "g4f" "http://127.0.0.1:1337/v1/models"
+  wait_for_url "router" "http://127.0.0.1:1340/health"
+  wait_for_url "fcc" "http://127.0.0.1:8082/health"
   echo "Commander: cd /sdcard/ARMY && /root/.local/bin/fcc-claude"
   echo "Logs: $LOG_DIR/army-g4f.log, army-router.log, army-fcc.log"
 } > "$STATUS_FILE"
