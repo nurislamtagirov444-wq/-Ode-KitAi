@@ -20,9 +20,10 @@
       { "provider": "AnyProvider", "model": "command-a" }
     ],
     "default": [
+      { "provider": "AnyProvider", "model": "default" },
       { "provider": "WeWordle", "model": "gpt-4o" },
-      { "provider": "Yqcloud", "model": "gpt-4" },
-      { "provider": "AnyProvider", "model": "gpt-4o" }
+      { "provider": "WeWordle", "model": "gpt-4" },
+      { "provider": "Yqcloud", "model": "gpt-4" }
     ]
   }
 }
