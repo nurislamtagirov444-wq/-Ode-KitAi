@@ -35,18 +35,16 @@
 curl -fsSL https://raw.githubusercontent.com/nurislamtagirov444-wq/-Ode-KitAi/arena/019faeb4-ode-kitai/scripts/install-army-one-click.sh | sh
 ```
 
-После окончания добавь виджет Termux:Widget на домашний экран и выбери `ARMY-START`.
+После окончания добавь виджет Termux:Widget на домашний экран. В нём будут два ярлыка:
+
+- `ARMY-START` — фоновый запуск и проверка всей инфраструктуры;
+- `ARMY-COMMANDER` — открывает интерактивное окно с готовым `fcc-claude`.
 
 ## Обычная работа
 
 1. Нажми `ARMY-START`.
-2. Открой в браузере `http://127.0.0.1:8082/admin`, если нужно изменить маршруты.
-3. Запусти командира в новой Debian-сессии:
-
-```bash
-cd /sdcard/ARMY
-/root/.local/bin/fcc-claude
-```
+2. Нажми `ARMY-COMMANDER`, когда хочешь написать задачу агенту.
+3. Открой в браузере `http://127.0.0.1:8082/admin`, если нужно посмотреть маршруты.
 
 ## Ограничения
 
