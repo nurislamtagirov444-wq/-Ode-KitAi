@@ -24,8 +24,8 @@ if [ ! -x "$G4F_BIN" ] || [ ! -x "$G4F_PYTHON" ] || [ ! -x "$FCC_BIN" ]; then
   exit 1
 fi
 
-if [ ! -f "$ROUTER_DIR/g4f_failover_router.py" ] || [ ! -f "$ROUTER_DIR/routes.json" ]; then
-  echo "Failover router files are missing. Run the one-time Army installer again." >&2
+if [ ! -f "$ROUTER_DIR/g4f_failover_router.py" ] || [ ! -f "$ROUTER_DIR/routes.json" ] || [ ! -f "$ARMY_DIR/army-watchdog-debian.sh" ]; then
+  echo "Army files are missing. Run the one-time Army installer again." >&2
   exit 1
 fi
 
@@ -76,6 +76,7 @@ start_session() {
 start_session "army-g4f" "$G4F_BIN api"
 start_session "army-router" "$G4F_PYTHON $ROUTER_DIR/g4f_failover_router.py --config $ROUTER_DIR/routes.json"
 start_session "army-fcc" "$FCC_BIN"
+start_session "army-watchdog" "bash $ARMY_DIR/army-watchdog-debian.sh"
 
 check_url() {
   local name="$1"

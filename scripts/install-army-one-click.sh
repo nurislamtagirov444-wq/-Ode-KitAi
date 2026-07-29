@@ -23,7 +23,8 @@ mkdir -p "$ROUTER_DIR" "$ARMY_DIR/logs" "$ARMY_DIR/mission" "$ARMY_DIR/projects"
 curl -fsSL "$RAW/tools/g4f_failover_router.py" -o "$ROUTER_DIR/g4f_failover_router.py"
 curl -fsSL "$RAW/tools/g4f_failover_routes.example.json" -o "$ROUTER_DIR/routes.json"
 curl -fsSL "$RAW/scripts/army-start-debian.sh" -o "$ARMY_DIR/army-start-debian.sh"
-chmod 700 "$ROUTER_DIR/g4f_failover_router.py" "$ARMY_DIR/army-start-debian.sh"
+curl -fsSL "$RAW/scripts/army-watchdog-debian.sh" -o "$ARMY_DIR/army-watchdog-debian.sh"
+chmod 700 "$ROUTER_DIR/g4f_failover_router.py" "$ARMY_DIR/army-start-debian.sh" "$ARMY_DIR/army-watchdog-debian.sh"
 
 # tmux keeps the three local services alive after the shortcut has returned.
 proot-distro login debian -- bash -lc 'apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y tmux curl'
