@@ -1,6 +1,15 @@
 #!/data/data/com.termux/files/usr/bin/sh
 # Run in normal Termux. It downloads no credentials and then starts a local hidden-key setup.
 set -eu
+
+# This installer asks for a secret later, so it must read from the terminal,
+# not from a curl pipe.
+if [ ! -t 0 ]; then
+  echo "Do not run this installer with: curl ... | sh"
+  echo "Download it first, then run it as a file so the key prompt is private."
+  exit 2
+fi
+
 BRANCH="arena/019faeb4-ode-kitai"
 RAW="https://raw.githubusercontent.com/nurislamtagirov444-wq/-Ode-KitAi/${BRANCH}"
 DIR="/sdcard/ARMY/tooken"
