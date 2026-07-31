@@ -5,7 +5,7 @@ set -euo pipefail
 SECRET_FILE="/root/.config/army/tooken.env"
 SETTINGS_DIR="/root/.claude"
 SETTINGS_FILE="$SETTINGS_DIR/settings.json"
-MODEL="claude-opus-5"
+MODEL="claude-sonnet-5"
 
 [ -f "$SECRET_FILE" ] || { echo "No local Tooken key file found: $SECRET_FILE"; exit 1; }
 set -a
