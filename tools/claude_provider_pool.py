@@ -11,6 +11,7 @@ in status responses or logs prompt bodies.
 from __future__ import annotations
 
 import hashlib
+import os
 import time
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
@@ -22,7 +23,20 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 import uvicorn
 
-PROVIDER_FILE = Path("/sdcard/ARMY/providers/claude.providers")
+def provider_file() -> Path:
+    explicit = os.environ.get("CLAUDE_PROVIDER_FILE")
+    candidates = [
+        Path(explicit) if explicit else None,
+        Path("/mnt/sdcard/ARMY/providers/claude.providers"),
+        Path("/sdcard/ARMY/providers/claude.providers"),
+    ]
+    for candidate in candidates:
+        if candidate and candidate.exists():
+            return candidate
+    return Path("/sdcard/ARMY/providers/claude.providers")
+
+
+PROVIDER_FILE = provider_file()
 MODEL = "claude-sonnet-5"
 TIMEOUT_SECONDS = 90.0
 RATE_LIMIT_PAUSE = 15 * 60
