@@ -2,9 +2,10 @@
 # Creates private provider-list files. No key is read, copied, or sent anywhere.
 set -euo pipefail
 
-DIR="/root/.config/ai-pool"
+# Shared storage so the files are editable in the Android file manager.
+# Do not place them in Git or share screenshots containing real keys.
+DIR="/sdcard/ARMY/providers"
 mkdir -p "$DIR"
-chmod 700 "$DIR"
 
 make_file() {
   file="$1"
@@ -31,7 +32,7 @@ make_file "codex" "Codex CLI" "OpenAI Responses or Chat Completions"
 make_file "glm" "GLM terminal agent" "Z.ai / OpenAI-compatible"
 
 cat <<EOF
-Private provider files were created in:
+Provider files editable through Android Files were created in:
   $DIR
 
 Files:
