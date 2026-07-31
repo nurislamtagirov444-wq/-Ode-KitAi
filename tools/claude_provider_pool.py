@@ -10,7 +10,7 @@ in status responses or logs prompt bodies.
 """
 from __future__ import annotations
 
-import asyncio
+import hashlib
 import time
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
@@ -57,7 +57,9 @@ def load_providers() -> list[Provider]:
 
 
 def provider_id(provider: Provider) -> str:
-    return f"{provider.name}@{provider.url}"
+    # A changed key becomes a new route without exposing the key in status/logs.
+    fingerprint = hashlib.sha256(provider.key.encode()).hexdigest()[:12]
+    return f"{provider.name}@{provider.url}#{fingerprint}"
 
 
 def eligible(providers: list[Provider]) -> list[Provider]:
