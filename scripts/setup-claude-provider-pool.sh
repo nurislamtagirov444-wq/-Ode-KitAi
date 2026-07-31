@@ -20,8 +20,8 @@ LOG_DIR="/root/army-logs"
 id worker >/dev/null 2>&1 || { echo "Run the Claude worker setup first."; exit 1; }
 
 # Require at least one real non-comment provider line.
-if ! grep -Eq '^[[:space:]]*[^#|]+[[:space:]]*\|[[:space:]]*https?://[^|]+\|[[:space:]]*[^#|]+[[:space:]]*$' "$POOL_FILE"; then
-  echo "claude.providers has no valid KEY | URL | PROVIDER line."
+if ! grep -Eq '^[[:space:]]*[^#|]+[[:space:]]*\|[[:space:]]*https?://[^|]+\|[[:space:]]*[^#|]+([[:space:]]*\|[[:space:]]*[^#|]+)?[[:space:]]*$' "$POOL_FILE"; then
+  echo "claude.providers has no valid KEY | URL | PROVIDER | MODEL line."
   exit 1
 fi
 

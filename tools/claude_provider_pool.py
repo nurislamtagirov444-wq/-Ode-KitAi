@@ -2,7 +2,9 @@
 """Anthropic-compatible local failover gateway for Claude Code.
 
 Provider source file format (one provider per line):
-  KEY | URL | PROVIDER
+  KEY | URL | PROVIDER | MODEL
+
+MODEL is optional; when omitted it defaults to claude-sonnet-5.
 
 The gateway reads the file on every request, so adding/removing a line in the
 Android file manager takes effect without restarting it. It never returns keys
@@ -48,6 +50,7 @@ class Provider:
     key: str
     url: str
     name: str
+    model: str
 
 
 # name -> (retry_after_epoch, reason). Keys are intentionally not retained here.
@@ -63,17 +66,18 @@ def load_providers() -> list[Provider]:
         if not line or line.startswith("#"):
             continue
         parts = [piece.strip() for piece in line.split("|")]
-        if len(parts) != 3 or not all(parts):
+        if len(parts) not in (3, 4) or not all(parts):
             continue
-        key, url, name = parts
-        result.append(Provider(key=key, url=url.rstrip("/"), name=name))
+        key, url, name = parts[:3]
+        model = parts[3] if len(parts) == 4 else MODEL
+        result.append(Provider(key=key, url=url.rstrip("/"), name=name, model=model))
     return result
 
 
 def provider_id(provider: Provider) -> str:
     # A changed key becomes a new route without exposing the key in status/logs.
     fingerprint = hashlib.sha256(provider.key.encode()).hexdigest()[:12]
-    return f"{provider.name}@{provider.url}#{fingerprint}"
+    return f"{provider.name}@{provider.url}/{provider.model}#{fingerprint}"
 
 
 def eligible(providers: list[Provider]) -> list[Provider]:
@@ -125,7 +129,7 @@ async def health() -> dict[str, Any]:
     now = time.time()
     return {
         "ok": True,
-        "model": MODEL,
+        "default_model": MODEL,
         "configured_providers": len(providers),
         "eligible_providers": len(eligible(providers)),
         "paused": [
@@ -153,7 +157,7 @@ async def messages(request: Request):
     failures: list[str] = []
     for provider in candidates:
         payload = dict(body)
-        payload["model"] = MODEL
+        payload["model"] = provider.model
         try:
             upstream_request = client.build_request(
                 "POST", f"{provider.url}/v1/messages", json=payload, headers=upstream_headers(request, provider)

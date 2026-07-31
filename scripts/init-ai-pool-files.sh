@@ -15,9 +15,10 @@ make_file() {
 # $title
 # Protocol expected by this agent: $protocol
 # One active provider per line, exactly in this order:
-# KEY | URL | PROVIDER
-# Example only -- replace all three fields yourself:
-# your_key_here | https://gateway.example | provider_name
+# KEY | URL | PROVIDER | MODEL
+# MODEL is optional for Claude (defaults to claude-sonnet-5).
+# Example only -- replace all fields yourself:
+# your_key_here | https://gateway.example | provider_name | model_id
 EOF
   chmod 600 "$DIR/$file.providers"
 }
